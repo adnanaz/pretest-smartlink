@@ -1,10 +1,10 @@
 # pretest-smartlink
-`
+```
 Stack : Vue Js 2 ^2.6.11
 API writing style : Composition API ^1.4.9
 CSS Preprocessor : SCSS "~1.32.0"
 CSS Framework : Veutify ^2.6.0
-`
+```
 ## Project setup
 ```
 How to install and run it local 
