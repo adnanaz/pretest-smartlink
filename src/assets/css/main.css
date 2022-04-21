@@ -1,0 +1,26 @@
+@import url("https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,300;0,400;0,800;1,500&display=swap");
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  text-decoration: none !important;
+}
+
+ul,
+li {
+  list-style: none;
+  padding: 0;
+}
+
+.background {
+  background: #EFF1EF;
+}
+
+.span {
+  font-size: 1.1rem;
+}
+
+.v-application {
+  font-family: "Overpass", sans-serif, sans-serif !important;
+}
+/*# sourceMappingURL=main.css.map */
