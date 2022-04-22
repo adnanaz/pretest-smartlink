@@ -13,7 +13,7 @@
         <div class="faktur__absence d-flex">
           <p>Masuk 22 Hari</p>
           <v-spacer></v-spacer>
-          <p @click="baseDialog.isVisible = true" class="faktur__absence-edit">
+          <p @click="baseDialogKeterlambatan.isVisible = true" class="faktur__absence-edit">
             Ubah Kehadiran
           </p>
         </div>
@@ -35,7 +35,7 @@
             <v-spacer></v-spacer>
             <div class="d-flex align-center" style="margin-right: 1rem">
               <p class="faktur__items-price mb-0">{{ el.amount }}</p>
-              <v-btn color="#206CFF" elevation="0" icon>
+              <v-btn @click="baseDialogGapok.isVisible = true" color="#206CFF" elevation="0" icon>
                 <v-icon color="#206CFF">{{ el.icon }}</v-icon>
               </v-btn>
             </div>
@@ -199,7 +199,8 @@
     </div>
 
     <!-- DIALOG -->
-    <base-dialog ref="baseDialog" title="Ubah Kehadiran"></base-dialog>
+    <base-dialog ref="baseDialogKeterlambatan" mode="keterlambatan" title="Ubah Kehadiran"></base-dialog>
+    <base-dialog ref="baseDialogGapok" mode="gapok" title="Ubah Gaji Pokok"></base-dialog>
   </div>
 </template>
 
@@ -302,7 +303,9 @@ export default {
       },
     ]);
 
-    const baseDialog = ref(null);
+    const baseDialogKeterlambatan = ref(null);
+    const baseDialogGapok = ref(null);
+
     // const handleDialog = (event) => {
     //   console.log(event);
     // };
@@ -312,7 +315,8 @@ export default {
       aktifitasArr,
       komisiArr,
       tanggunganArr,
-      baseDialog,
+      baseDialogKeterlambatan,
+      baseDialogGapok,
 
       // icons
       mdiSquareEditOutline,
