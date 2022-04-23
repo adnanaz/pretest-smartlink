@@ -13,7 +13,10 @@
         <div class="faktur__absence d-flex">
           <p>Masuk 22 Hari</p>
           <v-spacer></v-spacer>
-          <p @click="baseDialogKeterlambatan.isVisible = true" class="faktur__absence-edit">
+          <p
+            @click="baseDialogKeterlambatan.isVisible = true"
+            class="faktur__absence-edit"
+          >
             Ubah Kehadiran
           </p>
         </div>
@@ -35,7 +38,12 @@
             <v-spacer></v-spacer>
             <div class="d-flex align-center" style="margin-right: 1rem">
               <p class="faktur__items-price mb-0">{{ el.amount }}</p>
-              <v-btn @click="baseDialogGapok.isVisible = true" color="#206CFF" elevation="0" icon>
+              <v-btn
+                @click="handleDialog(el.id)"
+                color="#206CFF"
+                elevation="0"
+                icon
+              >
                 <v-icon color="#206CFF">{{ el.icon }}</v-icon>
               </v-btn>
             </div>
@@ -89,7 +97,13 @@
               <v-btn icon outlined color="#206CFF" x-small class="mt-3 ml-4"
                 ><v-icon>{{ mdiPlus }}</v-icon></v-btn
               >
-              <div class="custom__add-commision mt-3 ml-2">
+              <div
+                @click="
+                  baseDialogKomisi.isVisible = true;
+                  komisiVal = null;
+                "
+                class="custom__add-commision mt-3 ml-2"
+              >
                 Tambah komisi lain...
               </div>
             </div>
@@ -107,6 +121,7 @@
                 <v-btn
                   color="#206CFF"
                   elevation="0"
+                  @click="handleComission(el.amount)"
                   style="margin-right: 1rem"
                   icon
                 >
@@ -118,7 +133,7 @@
             <div class="faktur__subtotal d-flex">
               <h3>Subtotal Komisi</h3>
               <v-spacer></v-spacer>
-              <p>Rp 200.000</p>
+              <p class="mt-4">Rp 200.000</p>
             </div>
           </div>
           <div class="faktur__divider-solid"></div>
@@ -137,7 +152,13 @@
               <v-btn icon outlined color="#206CFF" x-small class="mt-3 ml-4"
                 ><v-icon>{{ mdiPlus }}</v-icon></v-btn
               >
-              <div class="custom__add-commision mt-3 ml-2">
+              <div
+                @click="
+                  baseDialogDenda.isVisible = true;
+                  dendaVal = null;
+                "
+                class="custom__add-commision mt-3 ml-2"
+              >
                 Tambah pembayaran tanggungan...
               </div>
             </div>
@@ -151,8 +172,9 @@
               </div>
               <v-spacer></v-spacer>
               <div class="d-flex align-center">
-                <p class="faktur__items-price mb-0">{{ el.amount }}</p>
+                <p class="custom__price mb-0">{{ el.amount }}</p>
                 <v-btn
+                  @click="handlePunishment(el.amount)"
                   color="#206CFF"
                   style="margin-right: 1rem"
                   elevation="0"
@@ -199,8 +221,33 @@
     </div>
 
     <!-- DIALOG -->
-    <base-dialog ref="baseDialogKeterlambatan" mode="keterlambatan" title="Ubah Kehadiran"></base-dialog>
-    <base-dialog ref="baseDialogGapok" mode="gapok" title="Ubah Gaji Pokok"></base-dialog>
+    <base-dialog
+      ref="baseDialogKeterlambatan"
+      mode="keterlambatan"
+      title="Ubah Kehadiran"
+    ></base-dialog>
+    <base-dialog
+      ref="baseDialogGapok"
+      mode="gapok"
+      title="Ubah Gaji Pokok"
+    ></base-dialog>
+    <base-dialog
+      ref="baseDialogLembur"
+      mode="lembur"
+      title="Ubah Uang Absen/Transport/Lembur"
+    ></base-dialog>
+    <base-dialog
+      ref="baseDialogKomisi"
+      mode="komisi"
+      title="Tambah / Ubah Komisi"
+      :komisiVal="komisiVal"
+    ></base-dialog>
+    <base-dialog
+      ref="baseDialogDenda"
+      mode="denda"
+      title="Bayar Tanggungan / Denda"
+      :dendaVal="dendaVal"
+    ></base-dialog>
   </div>
 </template>
 
@@ -305,25 +352,80 @@ export default {
 
     const baseDialogKeterlambatan = ref(null);
     const baseDialogGapok = ref(null);
+    const baseDialogLembur = ref(null);
+    const baseDialogKomisi = ref(null);
+    const baseDialogDenda = ref(null);
+    const komisiVal = ref(null);
+    const dendaVal = ref(null);
 
-    // const handleDialog = (event) => {
-    //   console.log(event);
-    // };
+    // ————————————————————————————————————
+    //* ——— Functions
+    // ————————————————————————————————————
+    const handleDialog = (key) => {
+      /**
+       * ARGS: key as id -> gajiArr.id
+       */
+      switch (key) {
+        case 0:
+          baseDialogGapok.value.isVisible = true;
+          break;
+        case 1:
+          baseDialogLembur.value.isVisible = true;
+          break;
+        case 2:
+          baseDialogLembur.value.isVisible = true;
+          break;
+        case 3:
+          baseDialogLembur.value.isVisible = true;
+          break;
+        case 4:
+          baseDialogLembur.value.isVisible = true;
+          break;
+        default:
+          break;
+      }
+    };
+    const handleComission = (amount) => {
+      /**
+       * ARGS:
+       * amount -> komisiArr.amount
+       */
+      baseDialogKomisi.value.isVisible = true;
+      komisiVal.value = amount;
+    };
+    const handlePunishment = (amount) => {
+      /**
+       * ARGS:
+       * amount -> tanggunganArr.amount
+       */
+      baseDialogDenda.value.isVisible = true;
+      dendaVal.value = amount;
+    };
     return {
       // Template Ref
       gajiArr,
       aktifitasArr,
       komisiArr,
       tanggunganArr,
+      komisiVal,
+      dendaVal,
+
+      // BaseDialog
       baseDialogKeterlambatan,
       baseDialogGapok,
+      baseDialogLembur,
+      baseDialogKomisi,
+      baseDialogDenda,
 
       // icons
       mdiSquareEditOutline,
       mdiCancel,
       mdiPlus,
 
-      // handleDialog,
+      //Functions
+      handleDialog,
+      handleComission,
+      handlePunishment,
     };
   },
 };
@@ -446,8 +548,7 @@ export default {
       color: #6f7287;
     }
     &-price {
-      padding: 0 1rem;
-
+      font-weight: 400;
       font-size: 14px;
       line-height: 150%;
       /* identical to box height, or 21px */
@@ -601,6 +702,35 @@ export default {
         color: #6f7287;
       }
     }
+    &__hectic {
+      font-size: 16px;
+      line-height: 155%;
+      /* identical to box height, or 25px */
+      display: flex;
+      align-items: center;
+      letter-spacing: -0.02em;
+      color: #000000;
+    }
+
+    &__price {
+      /**
+      * Special case got override from 
+      * .faktur .custom__tanggungan p
+      */
+
+      font-weight: 400 !important;
+      font-size: 14px !important;
+      line-height: 150% !important;
+      /* identical to box height, or 21px */
+      text-align: right !important;
+      letter-spacing: -0.02em !important;
+      /* Black */
+      color: #000000 !important;
+    }
+  }
+
+  .dots__special {
+    margin-bottom: 1rem;
   }
 
   .submit {

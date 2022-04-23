@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="isVisible" scrollable max-width="380">
+  <v-dialog persistent v-model="isVisible" scrollable max-width="380">
     <template #activator="{ on, attrs }">
       <v-btn color="primary" dark v-bind="attrs" v-on="on"> Open Dialog </v-btn>
     </template>
@@ -56,7 +56,7 @@
     </v-card>
     <!-- Case Edit Gaji Pokok -->
     <v-card v-else-if="mode == 'gapok'" class="dialog" max-height="250px">
-        <v-card-title class="dialog__title">
+      <v-card-title class="dialog__title">
         <h3 class="push__left">{{ title }}</h3>
         <v-spacer></v-spacer>
         <v-btn icon @click="isVisible = false">
@@ -67,30 +67,24 @@
       <v-card-text class="dialog__text">
         <span class="dialog__text-special">Nominal</span>
         <div class="d-flex">
-            <div class="custom__currency">
-              Rp
-            </div>
-            <input type="number" class="custom__input-currency" />
-            <div class="custom__x align-self-center mx-2">
-              <v-img :src="require('@/assets/images/x3.png')"></v-img>
-            </div>
-            <input type="number" class="custom__input-currency2" />
-            <div class="custom__currency2">
-              Periode
-            </div>
+          <div class="custom__currency">Rp</div>
+          <input type="number" class="custom__input-currency text-center" />
+          <div class="custom__x align-self-center mx-2">
+            <v-img :src="require('@/assets/images/x3.png')"></v-img>
           </div>
+          <input type="number" class="custom__input-currency2 text-center" />
+          <div class="custom__currency2">Periode</div>
+        </div>
       </v-card-text>
 
       <v-card-actions
         class="px-4 mt-1 mb-4 dialog__action d-flex justify-center"
       >
-      
         <v-btn
-
           width="100%"
           height="47px"
           color="primary"
-          class="text-capitalize "
+          class="text-capitalize"
           elevation="0"
           @click="isVisible = false"
         >
@@ -98,7 +92,163 @@
         </v-btn>
       </v-card-actions>
     </v-card>
-    
+    <!-- Case Uang Lembur -->
+    <v-card v-else-if="mode == 'lembur'" class="dialog" max-height="283px">
+      <v-card-title class="dialog__title">
+        <h3 class="">{{ title }}</h3>
+        <v-spacer></v-spacer>
+        <v-btn icon @click="isVisible = false">
+          <v-icon>{{ mdiClose }}</v-icon>
+        </v-btn>
+      </v-card-title>
+      <v-divider></v-divider>
+      <v-card-text class="dialog__text">
+        <span class="dialog__text-special">Nominal</span>
+        <div class="d-flex">
+          <div class="custom__currency">Rp</div>
+          <input type="number" class="custom__input-currency text-center" />
+          <div class="custom__x align-self-center mx-2">
+            <v-img :src="require('@/assets/images/x3.png')"></v-img>
+          </div>
+          <div class="align-self-center custom__hectic">22 Hari</div>
+        </div>
+        <div class="faktur__divider-dots mb-4"></div>
+        <div class="d-flex custom__hectic-total">
+          <p>Jumlah</p>
+          <v-spacer></v-spacer>
+          <p>Rp 220.000</p>
+        </div>
+      </v-card-text>
+
+      <v-card-actions
+        class="px-4 mt-1 mb-4 dialog__action d-flex justify-center"
+      >
+        <v-btn
+          width="100%"
+          height="47px"
+          color="primary"
+          class="text-capitalize"
+          elevation="0"
+          @click="isVisible = false"
+        >
+          Simpan
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+    <!-- Case Bayar Tanggungan / Denda  -->
+    <v-card v-else-if="mode == 'komisi'" class="dialog" max-height="330px">
+      <v-card-title class="push__left2 dialog__title">
+        <h3 class="">{{ title }}</h3>
+        <v-spacer></v-spacer>
+        <v-btn icon @click="isVisible = false">
+          <v-icon>{{ mdiClose }}</v-icon>
+        </v-btn>
+      </v-card-title>
+      <v-divider></v-divider>
+      <v-card-text class="dialog__text">
+        <span class="dialog__text-special">Nama Komisi</span>
+        <input
+          type="text"
+          placeholder="Nama Komisi"
+          class="custom__input-text"
+        />
+        <span class="dialog__text-special">Nominal</span>
+        <div class="d-flex">
+          <div class="custom__currency">Rp</div>
+          <input
+            type="number"
+            :value="komisiVal"
+            class="custom__input-currency3 text-center"
+          />
+        </div>
+      </v-card-text>
+
+      <v-card-actions
+        class="pl-4 pr-8 mt-1 mb-4 dialog__action d-flex justify-space-between"
+      >
+        <v-btn
+          color="error"
+          class="text-capitalize"
+          elevation="0"
+          outlined
+          height="47px"
+          width="160"
+          @click="isVisible = false"
+        >
+          Hapus
+        </v-btn>
+        <v-btn
+          width="160"
+          height="47px"
+          color="primary"
+          class="text-capitalize"
+          elevation="0"
+          @click="isVisible = false"
+        >
+          Simpan
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+    <!-- Case Bayar Tanggungan / Denda -->
+    <v-card v-else-if="mode == 'denda'" class="dialog" max-height="330px">
+      <v-card-title class="push__left2 dialog__title">
+        <h3 class="">{{ title }}</h3>
+        <v-spacer></v-spacer>
+        <v-btn icon @click="isVisible = false">
+          <v-icon>{{ mdiClose }}</v-icon>
+        </v-btn>
+      </v-card-title>
+      <v-divider></v-divider>
+      <v-card-text class="dialog__text">
+        <span class="dialog__text-special">Nama Tanggungan</span>
+        <input
+          type="text"
+          placeholder="Contoh: Ganti Barang Hilang"
+          class="custom__input-text"
+        />
+        <span class="dialog__text-special">Nominal Pembayaran</span>
+        <div class="d-flex mb-4">
+          <div class="custom__currency">Rp</div>
+          <input
+            type="number"
+            :value="dendaVal"
+            class="custom__input-currency3 text-center"
+          />
+        </div>
+        <span class="dialog__text-special">Keterangan</span>
+        <input
+          type="text"
+          placeholder="Contoh : Baju yang hilang warna merah"
+          class="custom__input-text"
+        />
+      </v-card-text>
+
+      <v-card-actions
+        class="pl-4 pr-8 mt-1 mb-4 dialog__action d-flex justify-space-between"
+      >
+        <v-btn
+          color="error"
+          class="text-capitalize"
+          elevation="0"
+          outlined
+          height="47px"
+          width="160"
+          @click="isVisible = false"
+        >
+          Hapus
+        </v-btn>
+        <v-btn
+          width="160"
+          height="47px"
+          color="primary"
+          class="text-capitalize"
+          elevation="0"
+          @click="isVisible = false"
+        >
+          Simpan
+        </v-btn>
+      </v-card-actions>
+    </v-card>
   </v-dialog>
 </template>
 
@@ -118,12 +268,21 @@ export default {
       required: false,
       default: "",
     },
+    komisiVal: {
+      type: Number,
+      required: false,
+      default: null,
+    },
+    dendaVal: {
+      type: Number,
+      required: false,
+      default: null,
+    },
   },
   setup() {
-    const choosedCountry = ref("");
     const isVisible = ref(false);
 
-    return { choosedCountry, isVisible, mdiClose, mdiMinus, mdiPlus };
+    return { isVisible, mdiClose, mdiMinus, mdiPlus };
   },
 };
 </script>
@@ -170,6 +329,9 @@ export default {
 .push__left {
   margin-left: 6rem;
 }
+.push__left2 {
+  margin-left: 4.5rem;
+}
 
 .custom {
   border: 1px solid #c8d0dd;
@@ -192,54 +354,74 @@ export default {
     box-sizing: border-box;
     border-radius: 3px;
     text-align: center;
+
+    &-text {
+      background: #ffffff;
+      /* Blue Muted */
+      border: 1px solid #c8d0dd;
+      box-sizing: border-box;
+      border-radius: 3px;
+      height: 47px;
+      padding: 5px;
+      width: 330px;
+      margin-bottom: 1rem;
+    }
   }
 
   &__currency {
-    width:52px;
-    padding:11px 16px 11px 16px;
-    height:47px;
-    background: #F6F6F6;
+    width: 52px;
+    padding: 11px 16px 11px 16px;
+    height: 47px;
+    background: #f6f6f6;
     /* Blue Muted */
-    border: 1px solid #C8D0DD;
+    border: 1px solid #c8d0dd;
     box-sizing: border-box;
     border-radius: 3px 0px 0px 3px;
   }
 
-   &__currency2 {
-    width:86px;
-    padding:11px 16px 11px 16px;
-    height:47px;
-    background: #F6F6F6;
+  &__currency2 {
+    width: 86px;
+    padding: 11px 16px 11px 16px;
+    height: 47px;
+    background: #f6f6f6;
     /* Blue Muted */
-    border: 1px solid #C8D0DD;
+    border: 1px solid #c8d0dd;
     box-sizing: border-box;
     border-radius: 3px 0px 0px 3px;
   }
 
   &__input-currency {
-  background: #FFFFFF;
-  /* Blue Muted */
-  border: 1px solid #C8D0DD;
-  border-left:none;
-  box-sizing: border-box;
-  width:106px;
-  border-radius: 3px;
+    background: #ffffff;
+    /* Blue Muted */
+    border: 1px solid #c8d0dd;
+    border-left: none;
+    box-sizing: border-box;
+    width: 106px;
+    border-radius: 3px;
   }
 
   &__input-currency2 {
-  background: #FFFFFF;
-  width:70px;
-  /* Blue Muted */
-  border: 1px solid #C8D0DD;
-  border-right:none;
-  box-sizing: border-box;
-  border-radius: 3px;
+    background: #ffffff;
+    width: 70px;
+    /* Blue Muted */
+    border: 1px solid #c8d0dd;
+    border-right: none;
+    box-sizing: border-box;
+    border-radius: 3px;
+  }
+  &__input-currency3 {
+    background: #ffffff;
+    /* Blue Muted */
+    border: 1px solid #c8d0dd;
+    border-left: none;
+    box-sizing: border-box;
+    width: 280px;
+    border-radius: 3px;
   }
 
   &__x {
     font-size: 16px;
   }
-
 }
 
 //removes arrows input type number
@@ -251,7 +433,7 @@ input::-webkit-inner-spin-button {
 }
 
 /* Firefox */
-input[type=number] {
+input[type="number"] {
   -moz-appearance: textfield;
 }
 </style>
