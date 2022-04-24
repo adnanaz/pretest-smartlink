@@ -1,8 +1,5 @@
 <template>
   <v-dialog persistent v-model="isVisible" scrollable max-width="380">
-    <template #activator="{ on, attrs }">
-      <v-btn color="primary" dark v-bind="attrs" v-on="on"> Open Dialog </v-btn>
-    </template>
     <!-- Case Edit Keterlambatan -->
     <v-card v-if="mode == 'keterlambatan'" class="dialog" max-height="250px">
       <v-card-title class="dialog__title">
@@ -17,12 +14,28 @@
         <span class="dialog__text-special">Durasi Keterlambatan</span>
         <div class="d-flex">
           <div class="">
-            <v-btn small elevation="0" class="custom__btn" height="47px">
+            <v-btn
+              @click="jumlahTerlambat -= 1"
+              small
+              elevation="0"
+              class="custom__btn"
+              height="47px"
+            >
               <v-icon color="#206cff">{{ mdiMinus }}</v-icon>
             </v-btn>
           </div>
-          <input type="number" class="custom__input" />
-          <v-btn small elevation="0" class="custom__btn" height="47px">
+          <input
+            type="number"
+            v-model="jumlahTerlambat"
+            class="custom__input"
+          />
+          <v-btn
+            @click="jumlahTerlambat += 1"
+            small
+            elevation="0"
+            class="custom__btn"
+            height="47px"
+          >
             <v-icon color="#206cff">{{ mdiPlus }}</v-icon>
           </v-btn>
         </div>
@@ -68,11 +81,19 @@
         <span class="dialog__text-special">Nominal</span>
         <div class="d-flex">
           <div class="custom__currency">Rp</div>
-          <input type="number" class="custom__input-currency text-center" />
+          <input
+            type="number"
+            v-model="gajiPokok"
+            class="custom__input-currency text-center"
+          />
           <div class="custom__x align-self-center mx-2">
             <v-img :src="require('@/assets/images/x3.png')"></v-img>
           </div>
-          <input type="number" class="custom__input-currency2 text-center" />
+          <input
+            v-model="periode"
+            type="number"
+            class="custom__input-currency2 text-center"
+          />
           <div class="custom__currency2">Periode</div>
         </div>
       </v-card-text>
@@ -106,11 +127,15 @@
         <span class="dialog__text-special">Nominal</span>
         <div class="d-flex">
           <div class="custom__currency">Rp</div>
-          <input type="number" class="custom__input-currency text-center" />
+          <input
+            type="number"
+            v-model="gajiLembur"
+            class="custom__input-currency text-center"
+          />
           <div class="custom__x align-self-center mx-2">
             <v-img :src="require('@/assets/images/x3.png')"></v-img>
           </div>
-          <div class="align-self-center custom__hectic">22 Hari</div>
+          <div class="align-self-center custom__hectic">{{ kehadiran }}</div>
         </div>
         <div class="faktur__divider-dots mb-4"></div>
         <div class="d-flex custom__hectic-total">
@@ -135,7 +160,7 @@
         </v-btn>
       </v-card-actions>
     </v-card>
-    <!-- Case Bayar Tanggungan / Denda  -->
+    <!-- Case Komisi  -->
     <v-card v-else-if="mode == 'komisi'" class="dialog" max-height="330px">
       <v-card-title class="push__left2 dialog__title">
         <h3 class="">{{ title }}</h3>
@@ -149,6 +174,7 @@
         <span class="dialog__text-special">Nama Komisi</span>
         <input
           type="text"
+          v-model="namaKomisiVal"
           placeholder="Nama Komisi"
           class="custom__input-text"
         />
@@ -157,7 +183,7 @@
           <div class="custom__currency">Rp</div>
           <input
             type="number"
-            :value="komisiVal"
+            v-model="komisiVal"
             class="custom__input-currency3 text-center"
           />
         </div>
@@ -202,6 +228,7 @@
       <v-card-text class="dialog__text">
         <span class="dialog__text-special">Nama Tanggungan</span>
         <input
+          v-model="namaTanggungan"
           type="text"
           placeholder="Contoh: Ganti Barang Hilang"
           class="custom__input-text"
@@ -211,7 +238,7 @@
           <div class="custom__currency">Rp</div>
           <input
             type="number"
-            :value="dendaVal"
+            v-model="dendaVal"
             class="custom__input-currency3 text-center"
           />
         </div>
@@ -268,21 +295,34 @@ export default {
       required: false,
       default: "",
     },
-    komisiVal: {
-      type: Number,
-      required: false,
-      default: null,
-    },
-    dendaVal: {
-      type: Number,
-      required: false,
-      default: null,
-    },
   },
   setup() {
     const isVisible = ref(false);
+    const jumlahTerlambat = ref(null);
+    const gajiPokok = ref(0);
+    const gajiLembur = ref(0);
+    const periode = ref(0);
+    const kehadiran = ref(0);
+    const dendaVal = ref(0);
+    const komisiVal = ref(0);
+    const namaKomisiVal = ref("");
+    const namaTanggungan = ref("");
 
-    return { isVisible, mdiClose, mdiMinus, mdiPlus };
+    return {
+      isVisible,
+      mdiClose,
+      mdiMinus,
+      mdiPlus,
+      jumlahTerlambat,
+      gajiPokok,
+      gajiLembur,
+      periode,
+      kehadiran,
+      dendaVal,
+      komisiVal,
+      namaKomisiVal,
+      namaTanggungan,
+    };
   },
 };
 </script>

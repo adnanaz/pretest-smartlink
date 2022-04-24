@@ -23,4 +23,498 @@ li {
 .v-application {
   font-family: "Overpass", sans-serif, sans-serif !important;
 }
+
+.faktur {
+  display: flex;
+  justify-content: center;
+}
+
+.faktur__boxes {
+  width: 360px;
+  border: 1px solid #ededed;
+}
+
+.faktur__boxes-title {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 155%;
+  /* identical to box height, or 25px */
+  letter-spacing: -0.02em;
+  /* Black */
+  color: #000000;
+}
+
+.faktur__name {
+  margin-top: 1rem;
+}
+
+.faktur__name h3 {
+  padding: 0 1rem;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 155%;
+  letter-spacing: -0.02em;
+  /* Black */
+  color: #000000;
+}
+
+.faktur__name p {
+  padding: 0 1rem;
+  margin-bottom: 0;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 150%;
+  /* semi-fade */
+  color: #6f7287;
+}
+
+.faktur__divider-dots {
+  margin-top: 1rem;
+  /* super fade */
+  border: 1px dashed #ededed;
+}
+
+.faktur__divider-solid {
+  height: 12px;
+  /* super fade */
+  border: 1px solid #f2f5f7;
+  background: #f2f5f7;
+}
+
+.faktur__absence {
+  margin-top: 1rem;
+  padding: 0 1rem;
+}
+
+.faktur__absence-edit {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 150%;
+  /* identical to box height, or 21px */
+  text-align: right;
+  letter-spacing: -0.02em;
+  /* blue smartlink */
+  color: #206cff;
+  cursor: pointer;
+}
+
+.faktur__absence-edit:hover {
+  transition: all 0.2s ease-in-out;
+  color: #4da9fa;
+}
+
+.faktur__items {
+  margin: 1rem 0;
+}
+
+.faktur__items-upah {
+  margin-bottom: 1rem;
+}
+
+.faktur__items h3 {
+  padding: 0 1rem;
+  font-style: normal;
+  font-weight: 700;
+  padding: 0 1rem;
+  font-size: 16px;
+  line-height: 155%;
+  /* identical to box height, or 25px */
+  letter-spacing: -0.02em;
+  /* Black */
+  color: #000000;
+}
+
+.faktur__items h4 {
+  padding: 0 1rem;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 150%;
+  /* identical to box height, or 21px */
+  letter-spacing: -0.02em;
+  /* Black */
+  color: #000000;
+}
+
+.faktur__items-special {
+  padding: 0 1rem;
+  font-size: 12px;
+  line-height: 150%;
+  /* identical to box height, or 18px */
+  letter-spacing: -0.02em;
+  /* Mid Grey */
+  color: #6f7287;
+}
+
+.faktur__items-price {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 150%;
+  /* identical to box height, or 21px */
+  text-align: right;
+  letter-spacing: -0.02em;
+  /* Black */
+  color: #000000;
+}
+
+.faktur__items .v-icon__svg {
+  height: 20px;
+  width: 20px;
+  fill: currentColor;
+}
+
+.faktur__items .faktur__subtotal {
+  margin-top: 1rem;
+}
+
+.faktur__items .faktur__subtotal h3 {
+  padding: 0 1rem;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 155%;
+  /* identical to box height, or 25px */
+  letter-spacing: -0.02em;
+}
+
+.faktur__items .faktur__subtotal p {
+  padding: 0 1rem;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 155%;
+  /* identical to box height, or 25px */
+  text-align: right;
+  letter-spacing: -0.02em;
+  /* Black */
+  color: #000000;
+}
+
+.faktur__items .faktur__subtotal-special {
+  margin-top: 1rem;
+}
+
+.faktur__items .faktur__subtotal-special h3 {
+  padding: 0 1rem;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 155%;
+  /* identical to box height, or 28px */
+  letter-spacing: -0.02em;
+  color: #00a88a;
+}
+
+.faktur__items .faktur__subtotal-special p {
+  padding: 0 1rem;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 155%;
+  /* identical to box height, or 28px */
+  text-align: right;
+  letter-spacing: -0.02em;
+  color: #00a88a;
+}
+
+.faktur .custom {
+  border: none;
+}
+
+.faktur .custom h3 {
+  padding: 0 1rem;
+  margin: 1rem 0;
+}
+
+.faktur .custom__add-commision {
+  cursor: pointer;
+  /* Smartlink Blue */
+  color: #206cff;
+  font-weight: 600;
+}
+
+.faktur .custom__add-commision:hover {
+  transition: all 0.2s ease-in-out;
+  color: #4da9fa;
+}
+
+.faktur .custom__tanggungan p {
+  padding: 0 1rem;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 150%;
+  /* identical to box height, or 18px */
+  letter-spacing: -0.02em;
+  /* Mid Grey */
+  color: #6f7287;
+  margin-bottom: 1rem;
+}
+
+.faktur .custom__tanggungan-subtotal h3 {
+  padding: 0 1rem;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 155%;
+  /* identical to box height, or 28px */
+  letter-spacing: -0.02em;
+  /* Black */
+  color: #000000;
+}
+
+.faktur .custom__tanggungan-subtotal p {
+  padding: 0 1rem;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 155%;
+  /* identical to box height, or 28px */
+  text-align: right;
+  letter-spacing: -0.02em;
+  color: #eb5757;
+}
+
+.faktur .custom__total h3 {
+  padding: 0 1rem;
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 155%;
+  /* identical to box height, or 31px */
+  letter-spacing: -0.02em;
+  color: #206cff;
+}
+
+.faktur .custom__total p {
+  padding: 0 1rem;
+  font-weight: 800;
+  font-size: 20px;
+  line-height: 155%;
+  /* identical to box height, or 31px */
+  text-align: right;
+  letter-spacing: -0.02em;
+  color: #206cff;
+}
+
+.faktur .custom__total-special {
+  padding: 0 1rem;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 150%;
+  /* or 18px */
+  letter-spacing: -0.02em;
+  /* Mid Grey */
+  color: #6f7287;
+}
+
+.faktur .custom__hectic {
+  font-size: 16px;
+  line-height: 155%;
+  /* identical to box height, or 25px */
+  display: flex;
+  align-items: center;
+  letter-spacing: -0.02em;
+  color: #000000;
+}
+
+.faktur .custom__price {
+  /**
+        * Special case got override from 
+        * .faktur .custom__tanggungan p
+        */
+  font-weight: 400 !important;
+  font-size: 14px !important;
+  line-height: 150% !important;
+  /* identical to box height, or 21px */
+  text-align: right !important;
+  letter-spacing: -0.02em !important;
+  /* Black */
+  color: #000000 !important;
+}
+
+.faktur .dots__special {
+  margin-bottom: 1rem;
+}
+
+.faktur .submit {
+  padding: 0 1rem;
+  margin-bottom: 1rem;
+}
+
+.faktur .submit__btn {
+  width: 100%;
+  height: 49px;
+  border-radius: 3px;
+}
+
+.faktur {
+  display: flex;
+  justify-content: center;
+}
+
+.faktur__boxes {
+  width: 360px;
+  border: 1px solid #ededed;
+}
+
+.faktur__boxes-title {
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 155%;
+  /* identical to box height, or 25px */
+  letter-spacing: -0.02em;
+  /* Black */
+  color: #000000;
+}
+
+.faktur__divider-dots {
+  margin-top: 1rem;
+  /* super fade */
+  border: 1px dashed #ededed;
+}
+
+.faktur__divider-solid {
+  height: 12px;
+  /* super fade */
+  border: 1px solid #f2f5f7;
+  background: #f2f5f7;
+}
+
+.faktur .dots__special {
+  margin-bottom: 1rem;
+}
+
+.faktur .submit {
+  padding: 0 1rem;
+  margin-bottom: 1rem;
+}
+
+.faktur .submit__btn {
+  width: 100%;
+  height: 49px;
+  border-radius: 3px;
+}
+
+.payout__gaji, .payout__upah, .payout__komisi {
+  margin: 0 1rem;
+}
+
+.payout__gaji p, .payout__upah p, .payout__komisi p {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 150%;
+  /* identical to box height, or 21px */
+  letter-spacing: -0.02em;
+  /* Black */
+  color: #000000;
+}
+
+.payout__gaji h3, .payout__upah h3, .payout__komisi h3 {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 155%;
+  /* identical to box height, or 25px */
+  text-align: right;
+  letter-spacing: -0.02em;
+  /* Black */
+  color: #000000;
+}
+
+.payout__gaji-kotor {
+  margin: 0 1rem;
+}
+
+.payout__gaji-kotor p {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 150%;
+  /* identical to box height, or 21px */
+  letter-spacing: -0.02em;
+  /* Black */
+  color: #000000;
+}
+
+.payout__gaji-kotor h3 {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 155%;
+  /* identical to box height, or 25px */
+  text-align: right;
+  letter-spacing: -0.02em;
+  color: #00a88a;
+}
+
+.payout__tanggungan {
+  margin: 0 1rem;
+}
+
+.payout__tanggungan p {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 150%;
+  /* identical to box height, or 21px */
+  letter-spacing: -0.02em;
+  color: #ff0000;
+}
+
+.payout__tanggungan h3 {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 155%;
+  /* identical to box height, or 25px */
+  text-align: right;
+  letter-spacing: -0.02em;
+  color: #ff0000;
+}
+
+.payout__gaji-bersih {
+  margin: 0 1rem;
+}
+
+.payout__gaji-bersih p {
+  margin-top: 1rem;
+  font-weight: 800;
+  font-size: 16px;
+  line-height: 155%;
+  /* identical to box height, or 25px */
+  letter-spacing: -0.02em;
+  color: #206cff;
+}
+
+.payout__gaji-bersih h3 {
+  font-style: normal;
+  font-weight: 800;
+  font-size: 16px;
+  line-height: 155%;
+  /* identical to box height, or 25px */
+  text-align: right;
+  letter-spacing: -0.02em;
+  color: #206cff;
+}
+
+.v-text-field.v-text-field--solo:not(.v-text-field--solo-flat)
+> .v-input__control
+> .v-input__slot {
+  /* box-shadow: 0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%); */
+  border: 1px solid #c8d0dd !important;
+  box-shadow: none !important;
+}
+
+.form__rekening {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 150%;
+  /* Mid Grey */
+  color: #6f7287;
+  /* Inside auto layout */
+}
+
+.form__input {
+  background: #ffffff;
+  /* Blue Muted */
+  border: 1px solid #c8d0dd;
+  box-sizing: border-box;
+  border-radius: 3px;
+}
+
+.form__required {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 150%;
+  /* Smartlink Blue */
+  color: #206cff;
+}
 /*# sourceMappingURL=main.css.map */

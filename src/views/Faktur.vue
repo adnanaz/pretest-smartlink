@@ -6,78 +6,107 @@
         <div class="ma-5 text-center faktur__boxes-title">Faktur gaji</div>
         <v-divider></v-divider>
         <div class="faktur__name">
-          <h3>Bu Adara Olivia</h3>
-          <p>01 Januari 2021 - 31 Januari 2021</p>
+          <h3>{{ dataArr.nama_karyawan }}</h3>
+          <p>
+            {{ dataArr.tanggal_awal | dateFull }} -
+            {{ dataArr.tanggal_akhir | dateFull }}
+          </p>
           <div class="faktur__divider-dots"></div>
         </div>
         <div class="faktur__absence d-flex">
-          <p>Masuk 22 Hari</p>
+          <p>Masuk {{ dataArr.total_kehadiran }} Hari</p>
           <v-spacer></v-spacer>
           <p
-            @click="baseDialogKeterlambatan.isVisible = true"
+            @click="handleEditKeterlambatan(dataArr.total_kehadiran)"
             class="faktur__absence-edit"
           >
             Ubah Kehadiran
           </p>
         </div>
         <div class="faktur__divider-solid"></div>
-        <!-- GAJI -->
+
         <div class="faktur__items">
-          <h3>Gaji</h3>
-          <div
-            v-for="(el, id) in gajiArr"
-            :key="id"
-            class="d-flex align-center mt-2"
-          >
-            <div>
-              <h4>{{ el.name }}</h4>
-              <p class="faktur__items-special">
-                {{ el.moneyXperiod }} x {{ el.absence }}
-              </p>
+          <!-- Gaji -->
+          <div>
+            <h3>Gaji</h3>
+            <div
+              v-for="(el, id) in dataArr.pengaturan_gaji"
+              :key="id"
+              class="d-flex align-center mt-2"
+            >
+              <div>
+                <h4>{{ el.nama }}</h4>
+                <p class="faktur__items-special">
+                  {{ el.nominal | price }} x
+                  {{
+                    el.jenis == "periode"
+                      ? dataArr.total_periode + " Periode"
+                      : dataArr.total_kehadiran + " Kehadiran"
+                  }}
+                </p>
+              </div>
+              <v-spacer></v-spacer>
+              <div class="d-flex align-center" style="margin-right: 1rem">
+                <p class="faktur__items-price mb-0">{{ el.nominal | price }}</p>
+                <v-btn
+                  @click="
+                    handleDialog(
+                      el.jenis,
+                      el.nominal,
+                      dataArr.total_periode,
+                      dataArr.total_kehadiran
+                    )
+                  "
+                  color="#206CFF"
+                  elevation="0"
+                  icon
+                >
+                  <v-icon color="#206CFF">{{
+                    icons.mdiSquareEditOutline
+                  }}</v-icon>
+                </v-btn>
+              </div>
             </div>
-            <v-spacer></v-spacer>
-            <div class="d-flex align-center" style="margin-right: 1rem">
-              <p class="faktur__items-price mb-0">{{ el.amount }}</p>
-              <v-btn
-                @click="handleDialog(el.id)"
-                color="#206CFF"
-                elevation="0"
-                icon
-              >
-                <v-icon color="#206CFF">{{ el.icon }}</v-icon>
-              </v-btn>
+            <div class="faktur__divider-dots"></div>
+            <div class="faktur__subtotal d-flex">
+              <h3>Subtotal Gaji</h3>
+              <v-spacer></v-spacer>
+              <p>Rp.50.000</p>
             </div>
           </div>
-          <div class="faktur__divider-dots"></div>
-          <div class="faktur__subtotal d-flex">
-            <h3>Subtotal Gaji</h3>
-            <v-spacer></v-spacer>
-            <p>Rp.524.000</p>
-          </div>
+
           <div class="faktur__divider-solid"></div>
+
           <!-- UPAH -->
           <div class="faktur__items">
             <h3 class="faktur__items-upah">Upah Borongan</h3>
             <v-divider></v-divider>
             <div
-              v-for="(el, id) in aktifitasArr"
+              v-for="(el, id) in dataArr.pengaturan_upah"
               :key="id"
               class="d-flex align-center mt-2"
             >
-              <div>
-                <h4>{{ el.name }}</h4>
-                <p class="faktur__items-special">{{ el.weight }} KG</p>
+              <div class="mt-4">
+                <h4>{{ el.nama }}</h4>
+                <!-- karena struktur api terpisah antara pengaturan upah dan 
+                pengerjaan upah maka ditampilkan secara manual untuk sementara, segera saya update 
+                struktur tampilan yang baru jika waktu cukup. -->
+                <p class="faktur__items-special">
+                  {{ dataArr.pengerjaan_upah[0].nominal }}
+                  {{ dataArr.pengerjaan_upah[0].satuan }}
+                </p>
               </div>
               <v-spacer></v-spacer>
               <div class="d-flex align-center">
-                <p class="faktur__items-price mb-0">{{ el.amount }}</p>
+                <p class="faktur__items-price mb-0">{{ el.nominal | price }}</p>
                 <v-btn
+                  disabled
                   style="margin-right: 1rem"
                   color="#206CFF"
                   elevation="0"
                   icon
                 >
-                  <v-icon color="#206CFF">{{ el.icon }}</v-icon>
+                  <v-icon color="#206CFF">{{ icons.mdiCancel }}</v-icon>
                 </v-btn>
               </div>
             </div>
@@ -85,10 +114,12 @@
             <div class="faktur__subtotal d-flex">
               <h3>Subtotal Upah</h3>
               <v-spacer></v-spacer>
-              <p>Rp 100.000</p>
+              <p>Rp. 1.800</p>
             </div>
           </div>
+
           <div class="faktur__divider-solid"></div>
+
           <!-- KOMISI -->
           <div class="faktur__items custom">
             <h3>Komisi</h3>
@@ -107,25 +138,28 @@
                 Tambah komisi lain...
               </div>
             </div>
+            <!-- dummy or change to dataArr.komisi to real data -->
             <div
               v-for="(el, id) in komisiArr"
               :key="id"
               class="d-flex align-center mt-2"
             >
-              <div>
+              <div class="mt-4">
                 <h4>{{ el.name }}</h4>
               </div>
               <v-spacer></v-spacer>
-              <div class="d-flex align-center">
-                <p class="faktur__items-price mb-0">{{ el.amount }}</p>
+              <div class="d-flex align-center mt-4">
+                <p class="faktur__items-price mb-0">{{ el.amount | price }}</p>
                 <v-btn
                   color="#206CFF"
                   elevation="0"
-                  @click="handleComission(el.amount)"
+                  @click="handleComission(el.amount, el.name)"
                   style="margin-right: 1rem"
                   icon
                 >
-                  <v-icon color="#206CFF">{{ el.icon }}</v-icon>
+                  <v-icon color="#206CFF">{{
+                    icons.mdiSquareEditOutline
+                  }}</v-icon>
                 </v-btn>
               </div>
             </div>
@@ -133,16 +167,19 @@
             <div class="faktur__subtotal d-flex">
               <h3>Subtotal Komisi</h3>
               <v-spacer></v-spacer>
-              <p class="mt-4">Rp 200.000</p>
+              <p class="mt-4">Rp.0</p>
             </div>
           </div>
+
           <div class="faktur__divider-solid"></div>
           <div class="faktur__subtotal-special d-flex">
             <h3>Total Gaji Kotor</h3>
             <v-spacer></v-spacer>
-            <p>Rp 100.000</p>
+            <p>Rp 51.800</p>
           </div>
+
           <div class="faktur__divider-solid"></div>
+
           <!-- TANGGUNGAN -->
           <div class="faktur__items custom__tanggungan">
             <h3>Tanggungan</h3>
@@ -163,24 +200,27 @@
               </div>
             </div>
             <div
-              v-for="(el, id) in komisiArr"
+              v-for="(el, id) in dataArr.tanggungan"
               :key="id"
               class="d-flex align-center mt-2"
             >
-              <div>
-                <h4>{{ el.name }}</h4>
+              <div class="mt-4">
+                <h4>{{ el.nama }}</h4>
+                <p>{{ el.keterangan }}</p>
               </div>
               <v-spacer></v-spacer>
               <div class="d-flex align-center">
-                <p class="custom__price mb-0">{{ el.amount }}</p>
+                <p class="custom__price mb-0">{{ el.nominal }}</p>
                 <v-btn
-                  @click="handlePunishment(el.amount)"
+                  @click="handlePunishment(el.nominal, el.nama)"
                   color="#206CFF"
                   style="margin-right: 1rem"
                   elevation="0"
                   icon
                 >
-                  <v-icon color="#206CFF">{{ el.icon }}</v-icon>
+                  <v-icon color="#206CFF">{{
+                    icons.mdiSquareEditOutline
+                  }}</v-icon>
                 </v-btn>
               </div>
             </div>
@@ -188,7 +228,7 @@
             <div class="faktur__subtotal custom__tanggungan-subtotal d-flex">
               <h3>Tanggungan Dibayar</h3>
               <v-spacer></v-spacer>
-              <p>(-) Rp 70.000</p>
+              <p>(-) Rp.0</p>
             </div>
           </div>
           <div class="faktur__divider-solid"></div>
@@ -202,7 +242,7 @@
               alt="icon-checklist"
             />
             <v-spacer></v-spacer>
-            <p>Rp 2.124.000</p>
+            <p>Rp 0</p>
           </div>
           <p class="custom__total-special">
             Nominal akhir yang diterima karyawan setelah ditambah komisi
@@ -214,6 +254,7 @@
             color="#206CFF"
             class="submit__btn text-capitalize white--text"
             elevation="0"
+            to="/detail-pembayaran"
             >Berikutnya</v-btn
           >
         </div>
@@ -240,30 +281,31 @@
       ref="baseDialogKomisi"
       mode="komisi"
       title="Tambah / Ubah Komisi"
-      :komisiVal="komisiVal"
     ></base-dialog>
     <base-dialog
       ref="baseDialogDenda"
       mode="denda"
       title="Bayar Tanggungan / Denda"
-      :dendaVal="dendaVal"
     ></base-dialog>
   </div>
 </template>
 
 <script>
-import baseDialog from "@/components/base/baseDialog.vue";
-import { ref } from "@vue/composition-api";
+import baseDialog from "@/components/base/BaseDialog.vue";
+import { ref, onMounted } from "@vue/composition-api";
 import { mdiSquareEditOutline, mdiCancel, mdiPlus } from "@mdi/js";
 export default {
   name: "Home",
   components: {
     baseDialog,
   },
+
   setup() {
     // ————————————————————————————————————
     //* ——— Template Ref
     // ————————————————————————————————————
+    const dataArr = ref([]);
+    // Data dummies
     const gajiArr = ref([
       {
         id: 0,
@@ -356,51 +398,68 @@ export default {
     const baseDialogKomisi = ref(null);
     const baseDialogDenda = ref(null);
     const komisiVal = ref(null);
+    const namaKomisiVal = ref(null);
     const dendaVal = ref(null);
+    const jumlahTerlambat = ref(null);
+
+    // ————————————————————————————————————
+    //* ——— HOOKS
+    // ————————————————————————————————————
+    onMounted(() => {
+      fetchSalary();
+    });
 
     // ————————————————————————————————————
     //* ——— Functions
     // ————————————————————————————————————
-    const handleDialog = (key) => {
-      /**
-       * ARGS: key as id -> gajiArr.id
-       */
+    const handleDialog = (key, nominal, totalPeriode, totalKehadiran) => {
       switch (key) {
-        case 0:
+        case "periode":
           baseDialogGapok.value.isVisible = true;
+          baseDialogGapok.value.gajiPokok = nominal;
+          baseDialogGapok.value.periode = totalPeriode;
+
           break;
-        case 1:
+        case "kehadiran":
           baseDialogLembur.value.isVisible = true;
-          break;
-        case 2:
-          baseDialogLembur.value.isVisible = true;
-          break;
-        case 3:
-          baseDialogLembur.value.isVisible = true;
-          break;
-        case 4:
-          baseDialogLembur.value.isVisible = true;
+          baseDialogLembur.value.gajiLembur = nominal;
+          baseDialogLembur.value.kehadiran = totalKehadiran;
           break;
         default:
           break;
       }
     };
-    const handleComission = (amount) => {
-      /**
-       * ARGS:
-       * amount -> komisiArr.amount
-       */
+    const handleComission = (amount, name) => {
       baseDialogKomisi.value.isVisible = true;
-      komisiVal.value = amount;
+      baseDialogKomisi.value.namaKomisiVal = name;
+      baseDialogKomisi.value.komisiVal = amount;
     };
-    const handlePunishment = (amount) => {
-      /**
-       * ARGS:
-       * amount -> tanggunganArr.amount
-       */
+    const handlePunishment = (amount, name) => {
       baseDialogDenda.value.isVisible = true;
-      dendaVal.value = amount;
+      baseDialogDenda.value.dendaVal = amount;
+      baseDialogDenda.value.namaTanggungan = name;
     };
+
+    const sumField = (key) => {
+      // unfixed
+      return dataArr.value.pengaturan_upah.reduce(
+        (total, nominal) => Number(total) + Number(nominal[key] || 0),
+        0
+      );
+    };
+
+    const handleEditKeterlambatan = (keterlambatan) => {
+      baseDialogKeterlambatan.value.jumlahTerlambat = keterlambatan;
+      baseDialogKeterlambatan.value.isVisible = true;
+    };
+
+    const fetchSalary = async () => {
+      fetch("https://boss.smartlink.id/salary/inquiry")
+        .then((response) => response.json())
+        .then((result) => (dataArr.value = result.data))
+        .catch((error) => console.log("error", error));
+    };
+
     return {
       // Template Ref
       gajiArr,
@@ -408,7 +467,10 @@ export default {
       komisiArr,
       tanggunganArr,
       komisiVal,
+      namaKomisiVal,
       dendaVal,
+      dataArr,
+      jumlahTerlambat,
 
       // BaseDialog
       baseDialogKeterlambatan,
@@ -419,328 +481,23 @@ export default {
 
       // icons
       mdiSquareEditOutline,
-      mdiCancel,
       mdiPlus,
+      icons: {
+        mdiCancel,
+        mdiSquareEditOutline,
+      },
 
       //Functions
       handleDialog,
       handleComission,
       handlePunishment,
+      fetchSalary,
+      sumField,
+      handleEditKeterlambatan,
     };
   },
 };
 </script>
 
 <style lang="scss">
-.faktur {
-  display: flex;
-  justify-content: center;
-
-  &__boxes {
-    width: 360px;
-    border: 1px solid #ededed;
-
-    &-title {
-      font-weight: 700;
-      font-size: 16px;
-      line-height: 155%;
-      /* identical to box height, or 25px */
-      letter-spacing: -0.02em;
-      /* Black */
-      color: #000000;
-    }
-  }
-
-  &__name {
-    margin-top: 1rem;
-
-    h3 {
-      padding: 0 1rem;
-      font-weight: 700;
-      font-size: 18px;
-      line-height: 155%;
-      letter-spacing: -0.02em;
-      /* Black */
-      color: #000000;
-    }
-    p {
-      padding: 0 1rem;
-      margin-bottom: 0;
-      font-weight: 400;
-      font-size: 14px;
-      line-height: 150%;
-      /* semi-fade */
-      color: #6f7287;
-    }
-  }
-
-  &__divider-dots {
-    margin-top: 1rem;
-    /* super fade */
-    border: 1px dashed #ededed;
-  }
-
-  &__divider-solid {
-    height: 12px;
-    /* super fade */
-    border: 1px solid #f2f5f7;
-    background: #f2f5f7;
-  }
-
-  &__absence {
-    margin-top: 1rem;
-    padding: 0 1rem;
-
-    &-edit {
-      font-weight: 600;
-      font-size: 14px;
-      line-height: 150%;
-      /* identical to box height, or 21px */
-      text-align: right;
-      letter-spacing: -0.02em;
-      /* blue smartlink */
-      color: #206cff;
-      cursor: pointer;
-    }
-
-    &-edit:hover {
-      transition: all 0.2s ease-in-out;
-      color: #4da9fa;
-    }
-  }
-
-  &__items {
-    margin: 1rem 0;
-    &-upah {
-      margin-bottom: 1rem;
-    }
-
-    h3 {
-      padding: 0 1rem;
-      font-style: normal;
-      font-weight: 700;
-      padding: 0 1rem;
-      font-size: 16px;
-      line-height: 155%;
-      /* identical to box height, or 25px */
-      letter-spacing: -0.02em;
-      /* Black */
-      color: #000000;
-    }
-    h4 {
-      padding: 0 1rem;
-      font-weight: 400;
-      font-size: 14px;
-      line-height: 150%;
-      /* identical to box height, or 21px */
-      letter-spacing: -0.02em;
-      /* Black */
-      color: #000000;
-    }
-    &-special {
-      padding: 0 1rem;
-
-      font-size: 12px;
-      line-height: 150%;
-      /* identical to box height, or 18px */
-      letter-spacing: -0.02em;
-      /* Mid Grey */
-      color: #6f7287;
-    }
-    &-price {
-      font-weight: 400;
-      font-size: 14px;
-      line-height: 150%;
-      /* identical to box height, or 21px */
-      text-align: right;
-      letter-spacing: -0.02em;
-      /* Black */
-      color: #000000;
-    }
-
-    .v-icon__svg {
-      height: 20px;
-      width: 20px;
-      fill: currentColor;
-    }
-
-    .faktur__subtotal {
-      margin-top: 1rem;
-
-      h3 {
-        padding: 0 1rem;
-        font-weight: 600;
-        font-size: 16px;
-        line-height: 155%;
-        /* identical to box height, or 25px */
-        letter-spacing: -0.02em;
-      }
-
-      p {
-        padding: 0 1rem;
-        font-weight: 600;
-        font-size: 16px;
-        line-height: 155%;
-        /* identical to box height, or 25px */
-        text-align: right;
-        letter-spacing: -0.02em;
-        /* Black */
-        color: #000000;
-      }
-    }
-
-    .faktur__subtotal-special {
-      margin-top: 1rem;
-      h3 {
-        padding: 0 1rem;
-        font-weight: 600;
-        font-size: 18px;
-        line-height: 155%;
-        /* identical to box height, or 28px */
-        letter-spacing: -0.02em;
-        color: #00a88a;
-      }
-
-      p {
-        padding: 0 1rem;
-        font-weight: 600;
-        font-size: 18px;
-        line-height: 155%;
-        /* identical to box height, or 28px */
-        text-align: right;
-        letter-spacing: -0.02em;
-        color: #00a88a;
-      }
-    }
-  }
-
-  .custom {
-    border: none;
-    h3 {
-      padding: 0 1rem;
-      margin: 1rem 0;
-    }
-
-    &__add-commision {
-      cursor: pointer;
-      /* Smartlink Blue */
-      color: #206cff;
-      font-weight: 600;
-    }
-    &__add-commision:hover {
-      transition: all 0.2s ease-in-out;
-      color: #4da9fa;
-    }
-
-    &__tanggungan {
-      p {
-        padding: 0 1rem;
-        font-weight: 400;
-        font-size: 12px;
-        line-height: 150%;
-        /* identical to box height, or 18px */
-        letter-spacing: -0.02em;
-        /* Mid Grey */
-        color: #6f7287;
-        margin-bottom: 1rem;
-      }
-      &-subtotal {
-        h3 {
-          padding: 0 1rem;
-
-          font-weight: 600;
-          font-size: 18px;
-          line-height: 155%;
-          /* identical to box height, or 28px */
-          letter-spacing: -0.02em;
-          /* Black */
-          color: #000000;
-        }
-        p {
-          padding: 0 1rem;
-          font-weight: 600;
-          font-size: 18px;
-          line-height: 155%;
-          /* identical to box height, or 28px */
-          text-align: right;
-          letter-spacing: -0.02em;
-          color: #eb5757;
-        }
-      }
-    }
-
-    &__total {
-      h3 {
-        padding: 0 1rem;
-        font-weight: 800;
-        font-size: 20px;
-        line-height: 155%;
-        /* identical to box height, or 31px */
-        letter-spacing: -0.02em;
-        color: #206cff;
-      }
-      p {
-        padding: 0 1rem;
-        font-weight: 800;
-        font-size: 20px;
-        line-height: 155%;
-        /* identical to box height, or 31px */
-        text-align: right;
-        letter-spacing: -0.02em;
-        color: #206cff;
-      }
-      &-special {
-        padding: 0 1rem;
-
-        font-style: normal;
-        font-weight: 400;
-        font-size: 12px;
-        line-height: 150%;
-        /* or 18px */
-        letter-spacing: -0.02em;
-        /* Mid Grey */
-        color: #6f7287;
-      }
-    }
-    &__hectic {
-      font-size: 16px;
-      line-height: 155%;
-      /* identical to box height, or 25px */
-      display: flex;
-      align-items: center;
-      letter-spacing: -0.02em;
-      color: #000000;
-    }
-
-    &__price {
-      /**
-      * Special case got override from 
-      * .faktur .custom__tanggungan p
-      */
-
-      font-weight: 400 !important;
-      font-size: 14px !important;
-      line-height: 150% !important;
-      /* identical to box height, or 21px */
-      text-align: right !important;
-      letter-spacing: -0.02em !important;
-      /* Black */
-      color: #000000 !important;
-    }
-  }
-
-  .dots__special {
-    margin-bottom: 1rem;
-  }
-
-  .submit {
-    padding: 0 1rem;
-    margin-bottom: 1rem;
-    &__btn {
-      width: 100%;
-      height: 49px;
-      border-radius: 3px;
-    }
-  }
-}
 </style>
