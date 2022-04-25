@@ -291,7 +291,7 @@
 </template>
 
 <script>
-import baseDialog from "@/components/base/BaseDialog.vue";
+import baseDialog from "@/components/base/baseDialog.vue";
 import { ref, onMounted } from "@vue/composition-api";
 import { mdiSquareEditOutline, mdiCancel, mdiPlus } from "@mdi/js";
 export default {
